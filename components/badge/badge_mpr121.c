@@ -168,7 +168,7 @@ badge_mpr121_get_interrupt_status(void)
 int mpr121_gpio_bit_out[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 
 int
-badge_mpr121_configure_gpio(int pin, int flags)
+badge_mpr121_configure_gpio(int pin, int config)
 {
 	if (pin < 4 || pin >= 12)
 		return -1;
@@ -184,7 +184,12 @@ badge_mpr121_configure_gpio(int pin, int flags)
 	if (res == -1)
 		return -1;
 
-	res = badge_mpr121_write_reg(0x73, res & bit_rst);
+	if ((config & 1) == 0)
+		res &= bit_rst;
+	else
+		res |= bit_set;
+
+	res = badge_mpr121_write_reg(0x73, res);
 	if (res == -1)
 		return -1;
 
@@ -193,7 +198,12 @@ badge_mpr121_configure_gpio(int pin, int flags)
 	if (res == -1)
 		return -1;
 
-	res = badge_mpr121_write_reg(0x74, res & bit_rst);
+	if ((config & 2) == 0)
+		res &= bit_rst;
+	else
+		res |= bit_set;
+
+	res = badge_mpr121_write_reg(0x74, res);
 	if (res == -1)
 		return -1;
 
@@ -202,7 +212,10 @@ badge_mpr121_configure_gpio(int pin, int flags)
 	if (res == -1)
 		return -1;
 
-	res = badge_mpr121_write_reg(0x75, res & bit_rst);
+	// always reset data out bit
+	res &= bit_rst;
+
+	res = badge_mpr121_write_reg(0x75, res);
 	if (res == -1)
 		return -1;
 
@@ -211,7 +224,12 @@ badge_mpr121_configure_gpio(int pin, int flags)
 	if (res == -1)
 		return -1;
 
-	res = badge_mpr121_write_reg(0x76, res | bit_set);
+	if ((config & 4) == 0)
+		res &= bit_rst;
+	else
+		res |= bit_set;
+
+	res = badge_mpr121_write_reg(0x76, res);
 	if (res == -1)
 		return -1;
 
@@ -220,7 +238,12 @@ badge_mpr121_configure_gpio(int pin, int flags)
 	if (res == -1)
 		return -1;
 
-	res = badge_mpr121_write_reg(0x77, res | bit_set);
+	if ((config & 8) == 0)
+		res &= bit_rst;
+	else
+		res |= bit_set;
+
+	res = badge_mpr121_write_reg(0x77, res);
 	if (res == -1)
 		return -1;
 

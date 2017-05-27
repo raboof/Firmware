@@ -121,7 +121,7 @@ badge_leds_init(void)
 	badge_portexp_set_output_high_z(PORTEXP_PIN_NUM_LEDS, 0);
 	badge_portexp_set_io_direction(PORTEXP_PIN_NUM_LEDS, 1);
 #elif defined(MPR121_PIN_NUM_LEDS)
-	badge_mpr121_configure_gpio(MPR121_PIN_NUM_LEDS, 1234567); // FIXME
+	badge_mpr121_configure_gpio(MPR121_PIN_NUM_LEDS, MPR121_OUTPUT);
 #endif
 
 	spi_bus_config_t buscfg = {
